@@ -19,5 +19,5 @@ ENV PULP_RISCV_GCC_TOOLCHAIN "/opt/riscv"
 
 WORKDIR /opt/
 RUN bash -c "git clone https://github.com/pulp-platform/pulp-sdk && cd pulp-sdk && source configs/pulp-open.sh && make build"
-
+RUN echo "source /opt/pulp-sdk/configs/pulp-open.sh" >> /home/vscode/.bashrc
     
