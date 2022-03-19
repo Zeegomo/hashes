@@ -4,8 +4,20 @@
 ARG VARIANT="buster"
 FROM mcr.microsoft.com/vscode/devcontainers/rust:0-${VARIANT}
 
-# [Optional] Uncomment this section to install additional packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends  build-essential git libftdi-dev libftdi1 doxygen python3-pip libsdl2-dev curl cmake libusb-1.0-0-dev scons gtkwave libsndfile1-dev rsync autoconf automake texinfo libtool pkg-config libsdl2-ttf-dev
-RUN wget https://github.com/pulp-platform/pulp-riscv-gnu-toolchain/releases/download/v1.0.16/v1.0.16-pulp-riscv-gcc-ubuntu-18.tar.bz2
+
+
+
+ADD "https://github.com/pulp-platform/pulp-riscv-gnu-toolchain/releases/download/v1.0.16/v1.0.16-pulp-riscv-gcc-ubuntu-18.tar.bz2" /tmp/pulp-riscv-gnu
+WORKDIR /tmp/
+RUN tar -xvf /tmp/pulp-riscv-gnu && mv /tmp/v1.0.16-pulp-riscv-gcc-ubuntu-18 /opt/riscv
 RUN pip install --user argcomplete pyelftools
+
+ENV PATH "$PATH:/opt/riscv/bin"
+ENV PULP_RISCV_GCC_TOOLCHAIN "/opt/riscv/bin"
+
+WORKDIR /opt/pulp-sdk
+RUN git clone https://github.com/pulp-platform/pulp-sdk
+
+    
